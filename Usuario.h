@@ -1,3 +1,5 @@
+#ifndef user
+#define user
 class Usuario{
 int id;
 public:
@@ -12,3 +14,5 @@ void mostrar();
 void mostrarAmigos();
 void mostrarPublicaciones();
 void agregarAmigo(Usuario* nuevoAmigo);
+
+#endif
