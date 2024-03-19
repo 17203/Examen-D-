@@ -1,15 +1,8 @@
+#include "usuario.h"
+#include "RedSocial.h"
+#include "Publicacion.h"
 #include <bits/stdc++.h>
 using namespace std;
-
-
-class Usuario{
-int id;
-public:
-string nombre;
-int edad;
-string nacionalidad;
-vector<Usuario*> amigos;
-vector <publicacion*> publicaciones;
 
 int getid();
 void mostrar();
