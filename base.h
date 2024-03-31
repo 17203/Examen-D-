@@ -6,7 +6,7 @@ class base {
 private:
  int id;
 public:
-string a;   
+string fecha;   
 };
 
 
