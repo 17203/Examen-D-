@@ -99,15 +99,16 @@ break;
 }
 //revisar este constructor por el valor de usuario, este se agrega al vector de publicaciones
 Publicacion::Publicacion(Usuario* usu, string fech, string cont){
-  usuario = usu;
   fecha = fech;
   contenido = cont;
+  usuario = usu;
+  
 }
 
 void Publicacion::mostrarPublicacion(){
-cout << fecha << endl;
+cout <<"publicado en: "<< fecha << endl;
 cout << contenido<< endl;
-cout <<"publicado por" <<  usuario->nombre<<endl;
+cout <<"publicado por: " <<  usuario->nombre<<endl;
 }
 
 Usuario::Usuario(string nom){
@@ -145,7 +146,7 @@ void Usuario::mostrarPublicaciones(){
 void Usuario::agregarAmigo(Usuario* nuevoAmigo){
   amigos.push_back(nuevoAmigo);
 }
-void Usuario::crearPublicacion(){
+void Usuario::crearPublicacion(){//no terminado
   Publicacion* np;
   publicaciones.push_back(np);
 }
@@ -170,18 +171,21 @@ this->usuarios = usuarios;
 RedSocial::RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones):RedSocial(nombre, usuarios){//Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
 this->publicaciones = publicaciones;
 } 
-void RedSocial::agregarUsuario(){
+void RedSocial::agregarUsuario(){//incompleto
   Usuario* us;
   usuarios.push_back(us);
 
 }
 
 void RedSocial::mostrarUsuarios(){
+  cout << "existen: " <<numeroDeUsuarios <<" usuarios en la red social actualmente"<<endl;
+  cout<<"los cuales son:" << endl;
   for (int i; i<=usuarios.size(); i++){
       cout << usuarios[i]->nombre <<endl;
     }
 }
 void RedSocial::mostrarPublicaciones(){
+  cout << "existen: " <<numeroDePublicaciones <<" publicaciones en la red social actualmente"<<endl;
 for (int i; i<=publicaciones.size(); i++){
       cout << publicaciones[i] <<endl;
     }
