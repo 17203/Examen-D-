@@ -59,61 +59,49 @@ class RedSocial{
     RedSocial(string nombre,  vector<Usuario*> usuarios); //Crea una red social con nombre y una lista precargada de usuarios.
     RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones); //Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
 
-    void agregarUsuario(Usuario* nuevo); //Permite agregar un usuario a la lista total de usuarios.
+    void agregarUsuario(); //Permite agregar un usuario a la lista total de usuarios.
     void mostrarUsuarios(); //Muestra todos los usuarios que existen actualmente en la red social.
     void mostrarPublicaciones(); //Muestra todas las publicaciones que existen actualmente en la red social.
     Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
 };
 
-
-//menu sigue sin ser funcional
-int main(){
-  RedSocial rs("paxinc");
-    Usuario* usuario1 = new Usuario("juante", 25, "brazil");
-    Usuario* usuario2 = new Usuario("Brayan", 30, "polanco");
+RedSocial rs("paxinc");
+    Usuario* usuario1 = new Usuario("Usuario1", 25, "Pais1");
+    Usuario* usuario2 = new Usuario("Usuario2", 30, "Pais2");
     rs.agregarUsuario(usuario1);
     rs.agregarUsuario(usuario2);
 
-int seleccion=8;
-while (seleccion != 0){
-cout << "Bienvenido" <<endl;
+//menu sigue sin ser funcional
+int main(){
+int seleccion;
+cout << "bienvenido" <<endl;
 cout << "presione 1 para ver lista de usuarios." << endl;
 cout << "presione 2 para ver lista de publicaciones." << endl;
 cout << "presione 3 para entrar a un perfil de usuario." << endl;
 cout << "presione 4 para agregar un nuevo usuario." << endl;
 cout << "presione 5 para salir" << endl;
 cin >> seleccion;
+while (seleccion != 0){
 switch(seleccion){
 case 1:
-{rs.mostrarUsuarios();}
+    rs.mostrarUsuarios();
 break;
   case 2: 
-{rs.mostrarPublicaciones();}
+    rs.mostrarPublicaciones();
   break;
 case 3:
-{int variable=0;
+  int variable=0;
   cout << "introduzca el id del usuario al que desea entrar" <<endl;
   cin >> variable;
-  rs.getUsuario(variable);}
+  rs.getUsuario(variable);
 break;
 case 4:
-{string nom, nac;
-int ed;
-    cout<<"introduzca el nombre del usuario " <<endl;
-    cin >> nom;  
-    cout << "introduzca la edad del usuario " << endl;
-    cin>> ed;
-    cout << "introduzca la nacionalidad del usuario " <<endl;
-    cin >> nac;
-    Usuario* nuevo = new Usuario(nom,ed, nac);
-    rs.agregarUsuario(nuevo);}
+
+    rs.agregarUsuario();
 break;
 case 5:
   return 0;
 break;
-default: 
-    cout << "opcion no valida, seleccione una correcta "<< endl;
-    break;
 }
 
 }
@@ -160,7 +148,7 @@ void Usuario::mostrarAmigos(){
     }
 }
 void Usuario::mostrarPublicaciones(){
-  for (int i; i<publicaciones.size(); i++){
+  for (int i; i<=publicaciones.size(); i++){
       cout << publicaciones[i] <<endl;
     }
 }
@@ -173,14 +161,14 @@ void Usuario::crearPublicacion(){//no terminado
   publicaciones.push_back(np);
 }
 Usuario* Usuario::getAmigo(int id){
-  for (int i; i<amigos.size(); i++){
+  for (int i; i<=amigos.size(); i++){
      if(amigos[i]->id == id){
       return amigos[i];
-     }
-     }
+     }else {
       cout << "no existe ningun amigo con ese id :(" << endl;
       return nullptr;
-
+     }
+    }
 }
 
 RedSocial::RedSocial(string nombre){
@@ -193,15 +181,16 @@ this->usuarios = usuarios;
 RedSocial::RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones):RedSocial(nombre, usuarios){
 this->publicaciones = publicaciones;
 } 
-void RedSocial::agregarUsuario(Usuario* nuevo){
-  numeroDeUsuarios++;
-  usuarios.push_back(nuevo);
+void RedSocial::agregarUsuario(){//incompleto
+  Usuario* us;
+  usuarios.push_back(us);
+
 }
 
 void RedSocial::mostrarUsuarios(){
   cout << "existen: " <<numeroDeUsuarios <<" usuarios en la red social actualmente"<<endl;
   cout<<"los cuales son:" << endl;
-  for (int i=0; i<usuarios.size(); i++){
+  for (int i; i<=usuarios.size(); i++){
       cout << usuarios[i]->nombre <<endl;
     }
 }
@@ -221,31 +210,3 @@ for(int i; i<= usuarios.size(); i++){
   }
   }
 }
-
-  /*INTERFAZ
-Opciones de Menú Principal:
-Muestra un mensaje de bienvenida a la Red Social y muestra un menú con las siguientes opciones:
-Ver lista de usuarios.
-Muestra un listado de todos los usuarios que existen en la red social.
-Ver lista de publicaciones.
-Muestra un listado de todas las publicaciones que existen en la red social. 
-Entrar a un perfil de usuario.
-Se introduce el ID del usuario para identificar al usuario y se muestra el Menú de Usuario en caso de encontrar una coincidencia.
-Agregar un nuevo usuario.
-Se piden los datos del nuevo usuario y se crea.
-Se agrega a la lista de usuarios de la red social.
-Salir
-Cierra el programa.
-Opciones de Menú de Usuario.
-Al inicio de la pantalla, muestra los datos del usuario seleccionado y un menú con las siguientes opciones:
-Ver lista de amigos.
-Muestra un listado de todos los amigos que tiene el usuario.
-Ver publicaciones.
-Muestra un listado de todas las publicaciones que ha hecho el usuario.
-Crear publicacion.
-Permite crear una nueva publicación.
-Entrar a perfil de amigo.
-Se introduce el ID del amigo para identificarlo y se muestra el Menú de Usuario del amigo seleccionado. Agregar un nuevo amigo.
-Salir.
-Se muestra la lista de los usuarios que existen, se introduce el ID y se hacen amigos.
-Regresa al menú de la Red Social.*/
