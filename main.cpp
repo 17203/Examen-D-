@@ -141,6 +141,7 @@ void Usuario::mostrarPublicaciones(){
       cout << publicaciones[i] <<endl;
     }
 }
+
 void Usuario::agregarAmigo(Usuario* nuevoAmigo){
   amigos.push_back(nuevoAmigo);
 }
