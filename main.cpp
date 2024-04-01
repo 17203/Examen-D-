@@ -12,45 +12,45 @@ string fecha;
 };
 class Publicacion/*: public base */{ //ver como agregar herencia de clase base, posible pero algo fallo
 private:
-int id;
+  int id;
 public:
-string fecha;
-string contenido;
-Usuario* usuario;
-Publicacion(Usuario* usu, string fech, string cont);
-void mostrarPublicacion();
+  string fecha;
+  string contenido;
+  Usuario* usuario;
+  Publicacion(Usuario* usu, string fech, string cont);
+  void mostrarPublicacion();
 };
 
 class Usuario{
 private:
-int id;
+  int id;
 public:
-string nombre;
-int edad;
-string nacionalidad;
-vector<Usuario*> amigos;
-vector <Publicacion*> publicaciones;
+  string nombre;
+  int edad;
+  string nacionalidad;
+  vector<Usuario*> amigos;
+  vector <Publicacion*> publicaciones;
 
-Usuario(string nom);
-Usuario(string nomb, int ed);
-Usuario(string nombr, int eda, string nac);
+    Usuario(string nom);
+    Usuario(string nomb, int ed);
+    Usuario(string nombr, int ed, string nac);
 
-int getid();
-void mostrar();
-void mostrarAmigos();
-void mostrarPublicaciones();
-void agregarAmigo(Usuario* nuevoAmigo);
-void crearPublicacion();
-Usuario* getAmigo(int id);
+  int getid();
+  void mostrar();
+  void mostrarAmigos();
+  void mostrarPublicaciones();
+  void agregarAmigo(Usuario* nuevoAmigo);
+  void crearPublicacion();
+  Usuario* getAmigo(int id);
 
 };
 
 class RedSocial{
-    private:
+  private:
     vector <Usuario*> usuarios;
     vector <Publicacion*> publicaciones;
 
-    public:
+  public:
     string nombre;
     int numeroDeUsuarios;
     int numeroDePublicaciones;
@@ -60,8 +60,8 @@ class RedSocial{
     RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones); //Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
 
     void agregarUsuario(); //Permite agregar un usuario a la lista total de usuarios.
-    void mostrarUsuario(); //Muestra todos los usuarios que existen actualmente en la red social.
-    void mostrarPublicacion(); //Muestra todas las publicaciones que existen actualmente en la red social.
+    void mostrarUsuarios(); //Muestra todos los usuarios que existen actualmente en la red social.
+    void mostrarPublicaciones(); //Muestra todas las publicaciones que existen actualmente en la red social.
     Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
 };
 
@@ -107,7 +107,7 @@ Publicacion::Publicacion(Usuario* usu, string fech, string cont){
 void Publicacion::mostrarPublicacion(){
 cout << fecha << endl;
 cout << contenido<< endl;
-Usuario* usuario;
+cout <<"publicado por" <<  usuario->nombre<<endl;
 }
 
 Usuario::Usuario(string nom){
@@ -133,7 +133,7 @@ void Usuario::mostrar(){
 }
 void Usuario::mostrarAmigos(){
     for (int i; i<=amigos.size(); i++){
-      cout << amigos[i] <<endl;
+      cout << amigos[i]->nombre <<endl;
     }
 }
 void Usuario::mostrarPublicaciones(){
@@ -148,6 +148,16 @@ void Usuario::agregarAmigo(Usuario* nuevoAmigo){
 void Usuario::crearPublicacion(){
   Publicacion* np;
   publicaciones.push_back(np);
+}
+Usuario* Usuario::getAmigo(int id){
+  for (int i; i<=amigos.size(); i++){
+     if(amigos[i]->id == id){
+      return amigos[i];
+     }else {
+      cout << "no existe ningun amigo con ese id :(" << endl;
+      return nullptr;
+     }
+    }
 }
 
 RedSocial::RedSocial(string nombre){ //Crea una red social con el nombre asignado.
@@ -165,6 +175,28 @@ void RedSocial::agregarUsuario(){
   usuarios.push_back(us);
 
 }
+
+void RedSocial::mostrarUsuarios(){
+  for (int i; i<=usuarios.size(); i++){
+      cout << usuarios[i]->nombre <<endl;
+    }
+}
+void RedSocial::mostrarPublicaciones(){
+for (int i; i<=publicaciones.size(); i++){
+      cout << publicaciones[i] <<endl;
+    }
+}
+Usuario* RedSocial::getUsuario(int id){
+for(int i; i<= usuarios.size(); i++){
+  if(usuarios[i]->getid() == id){
+  return usuarios[i];
+  } else {
+  cout << "este usuario no existe" << endl;
+  return nullptr;
+  }
+  }
+}
+
   /*INTERFAZ
 Opciones de Menú Principal:
 Muestra un mensaje de bienvenida a la Red Social y muestra un menú con las siguientes opciones:
