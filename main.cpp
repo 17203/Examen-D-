@@ -3,6 +3,7 @@
 #include <string>
 using namespace std;
 class Usuario;
+int id;
 class base {
 private:
  int id;
@@ -54,13 +55,14 @@ class RedSocial{
     int numeroDeUsuarios;
     int numeroDePublicaciones;
     
-    RedSocial(); 
-    RedSocial(string nom, int nu, int np);
-    
-    void agregarUsuario();
-    void mostrarUsuario();
-    void mostrarPublicacion();
-    Usuario* getUsuario (int id);
+    RedSocial(string nombre); //Crea una red social con el nombre asignado.
+    RedSocial(string nombre,  vector<Usuario*> usuarios); //Crea una red social con nombre y una lista precargada de usuarios.
+    RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones); //Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
+
+    void agregarUsuario(); //Permite agregar un usuario a la lista total de usuarios.
+    void mostrarUsuario(); //Muestra todos los usuarios que existen actualmente en la red social.
+    void mostrarPublicacion(); //Muestra todas las publicaciones que existen actualmente en la red social.
+    Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
 };
 
 //menu sigue sin ser funcional
@@ -109,15 +111,16 @@ Usuario* usuario;
 }
 
 Usuario::Usuario(string nom){
+  id++;
+  this->id=id;
   this->nombre= nom;
+  this->edad= 0;
+  this->nacionalidad="¿?";
 }
-Usuario::Usuario(string nom, int ed){
-  this->nombre = nom;
+Usuario::Usuario(string nom, int ed): Usuario(nom){
   this->edad = ed;
 }
-Usuario::Usuario(string nom, int ed, string nac){
-  this->nombre = nom;
-  this->edad = ed;
+Usuario::Usuario(string nom, int ed, string nac): Usuario(nom, ed){
   this->nacionalidad = nac;
 }
 
@@ -137,14 +140,30 @@ void Usuario::mostrarPublicaciones(){
   for (int i; i<=publicaciones.size(); i++){
       cout << publicaciones[i] <<endl;
     }
-} //agregar a estas instrucciones lo faltante
-void Usuario::agregarAmigo(Usuario* nuevoAmigo){}
+}
+void Usuario::agregarAmigo(Usuario* nuevoAmigo){
+  amigos.push_back(nuevoAmigo);
+}
 void Usuario::crearPublicacion(){
-
- // Publicacion(Usuario* usu, string fech, string cont);
+  Publicacion* np;
+  publicaciones.push_back(np);
 }
 
+RedSocial::RedSocial(string nombre){ //Crea una red social con el nombre asignado.
+this->nombre= nombre;
+}
+RedSocial::RedSocial(string nombre,  vector<Usuario*> usuarios):RedSocial(nombre){
+//Crea una red social con nombre y una lista precargada de usuarios.
+this->usuarios = usuarios;
+} 
+RedSocial::RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones):RedSocial(nombre, usuarios){//Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
+this->publicaciones = publicaciones;
+} 
+void RedSocial::agregarUsuario(){
+  Usuario* us;
+  usuarios.push_back(us);
 
+}
   /*INTERFAZ
 Opciones de Menú Principal:
 Muestra un mensaje de bienvenida a la Red Social y muestra un menú con las siguientes opciones:
