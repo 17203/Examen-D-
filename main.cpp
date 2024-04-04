@@ -1,7 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include "rlutil.h"
 using namespace std;
+using namespace rlutil;
 class Usuario;
 class Publicacion{
 private:
@@ -60,16 +62,17 @@ class RedSocial{
 RedSocial rs("paxinc");
 void menuDeUsuario(Usuario* usuario);
 void login(int variable);
-
+void fresquito();
 
 //menu es medianamente funcional
 int main(){
-    Usuario* usuario1 = new Usuario("juante", 25, "brazil");
+    Usuario* usuario1 = new Usuario("carlos", 25, "brazil");
     Usuario* usuario2 = new Usuario("Brayan", 30, "polanco");
     rs.agregarUsuario(usuario1);
     rs.agregarUsuario(usuario2);
 int seleccion=8;
 while (seleccion != 0){
+cls();
 cout << "Bienvenido" <<endl;
 cout << "presione 1 para ver lista de usuarios." << endl;
 cout << "presione 2 para ver lista de publicaciones." << endl;
@@ -79,12 +82,16 @@ cout << "presione 5 para salir" << endl;
 cin >> seleccion;
 switch(seleccion){
 case 1:
-{ system("cls");
-  rs.mostrarUsuarios();}
+{ cls();
+  rs.mostrarUsuarios();
+  cout << endl;
+  fresquito();
+  }
 break;
   case 2: 
 { system("cls");
-  rs.mostrarPublicaciones();}
+  rs.mostrarPublicaciones();
+  fresquito();}
   break;
 case 3:
 {int variable=0;
@@ -94,7 +101,7 @@ case 3:
 }
 break;
 case 4:
-{  
+{ 
   system("cls");
   cout << " si desea incluir nacionalidad y edad pulse 1" << endl;
       cout << " si desea incluir edad pulse 2" << endl;
@@ -145,24 +152,26 @@ void menuDeUsuario(Usuario* usuario){
   system("cls");
   int seleccion=1, var;
   Usuario* amigo;
-  usuario->mostrar();
+  
 
 
 while(seleccion != 0){
+  usuario->mostrar();
 cout << "presione 1 para ver lista de amigos." << endl; //Muestra un listado de todos los amigos que tiene el usuario.
 cout << "presione 2 para ver las publicaciones." << endl; //Muestra un listado de todas las publicaciones que ha hecho el usuario.
 cout << "presione 3 para crear publicacion." << endl;//Permite crear una nueva publicación.
 cout << "presione 4 para entrar a perfil de amigo" << endl; //Se introduce el ID del amigo para identificarlo y se muestra el Menú de Usuario del amigo seleccionado.
 cout << "presione 5 agregar un nuevo amigo" << endl;//Se muestra la lista de los usuarios que existen, se introduce el ID y se hacen amigos.
-cout << "presione 6 volver al mennu principal" << endl;
+cout << "presione 6 volver al menu principal" << endl;
 cin >> seleccion;
   switch(seleccion){
     case 1:
 
     if(usuario->amigos.size()==0){//funcion no sirve, no enseña amigos
       cout<< "jajajaja no tienes amigos loser" << endl;
-    }
-    usuario->mostrarAmigos(); 
+    }else{
+    cout << "Amigos: " << endl;
+    usuario->mostrarAmigos(); }
     break;
     case 2:
     if(usuario->publicaciones.size()==0){//funcion no sirve, no enseña publicaciones
@@ -180,10 +189,21 @@ cin >> seleccion;
     case 5:{
     rs.mostrarUsuarios();
     cout << "introduzca el ID del amigo a agregar" << endl;
+    amikos:
     cin>>var;
     Usuario* amigo = rs.getUsuario(var);
-    usuario->agregarAmigo(amigo);
-    cout << "se agrego con exito" << endl;
+    if(amigo!=nullptr) {
+      if(amigo->getid()!=usuario->getid()){
+      usuario->agregarAmigo(amigo);
+      cout << "se agrego con exito" << endl;}
+      else {cout << "este usuario es usted mismo, introduzca un id diferente" <<endl;
+      goto amikos;
+      }
+    }
+    else {
+      cout<<"introduzca un ID correcto" << endl;
+      goto amikos;
+    }
    } break;
     case 6:
     return;
@@ -198,7 +218,12 @@ void login(int variable){
 Usuario* us = rs.getUsuario(variable);
   if(us != nullptr)
   menuDeUsuario(us);}
-
+void fresquito(){
+  cout << "presione espacio para continuar" << endl;
+  char k;
+    do {
+        k = getkey();
+    } while (k != ' ');}
 
 //revisar este constructor por el valor de usuario, este se agrega al vector de publicaciones
 Publicacion::Publicacion(Usuario* usu, string fech, string cont){
@@ -235,14 +260,16 @@ void Usuario::mostrar(){
   cout <<"mi identificador es " << this->id << endl;
 }
 void Usuario::mostrarAmigos(){
-    for (int i; i<amigos.size(); i++){
+    for (int i=0; i<amigos.size(); i++){
       cout << amigos[i]->nombre <<endl;
     }
 }
 void Usuario::mostrarPublicaciones(){
-  for (int i; i<publicaciones.size(); i++){
+  for (int i=0; i<publicaciones.size(); i++){
+      cout << "publicacion numero #"<< i+1 <<endl;
       cout << publicaciones[i]->fecha <<endl;
       cout << publicaciones[i]->contenido <<endl;
+      cout << endl;
     }
 }
 
@@ -257,6 +284,7 @@ void Usuario::crearPublicacion(){//si terminado :D
   cout << "introduzca el contenido" << endl;
   cin >> np->contenido;
   publicaciones.push_back(np);
+  
 }
 Usuario* Usuario::getAmigo(int id){
   for (int i; i<amigos.size(); i++){
