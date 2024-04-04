@@ -166,17 +166,18 @@ cout << "presione 6 volver al menu principal" << endl;
 cin >> seleccion;
   switch(seleccion){
     case 1:
-
-    if(usuario->amigos.size()==0){//funcion no sirve, no enseña amigos
+  if(usuario->amigos.size()==0){//funcion no sirve, no enseña amigos
       cout<< "jajajaja no tienes amigos loser" << endl;
     }else{
     cout << "Amigos: " << endl;
-    usuario->mostrarAmigos(); }
+    usuario->mostrarAmigos(); 
+    }
     break;
     case 2:
     if(usuario->publicaciones.size()==0){//funcion no sirve, no enseña publicaciones
       cout << "no tienes publicaciones hechas" <<endl;}
     usuario->mostrarPublicaciones();
+    fresquito();
     break;
     case 3:
     usuario->crearPublicacion();
