@@ -68,7 +68,6 @@ int main(){
     Usuario* usuario2 = new Usuario("Brayan", 30, "polanco");
     rs.agregarUsuario(usuario1);
     rs.agregarUsuario(usuario2);
-menuPrincipal:
 int seleccion=8;
 while (seleccion != 0){
 cout << "Bienvenido" <<endl;
@@ -159,9 +158,15 @@ cout << "presione 6 volver al mennu principal" << endl;
 cin >> seleccion;
   switch(seleccion){
     case 1:
-    usuario->mostrarAmigos();
+
+    if(usuario->amigos.size()==0){//funcion no sirve, no enseña amigos
+      cout<< "jajajaja no tienes amigos loser" << endl;
+    }
+    usuario->mostrarAmigos(); 
     break;
     case 2:
+    if(usuario->publicaciones.size()==0){//funcion no sirve, no enseña publicaciones
+      cout << "no tienes publicaciones hechas" <<endl;}
     usuario->mostrarPublicaciones();
     break;
     case 3:
@@ -178,6 +183,7 @@ cin >> seleccion;
     cin>>var;
     Usuario* amigo = rs.getUsuario(var);
     usuario->agregarAmigo(amigo);
+    cout << "se agrego con exito" << endl;
    } break;
     case 6:
     return;
@@ -235,7 +241,8 @@ void Usuario::mostrarAmigos(){
 }
 void Usuario::mostrarPublicaciones(){
   for (int i; i<publicaciones.size(); i++){
-      cout << publicaciones[i] <<endl;
+      cout << publicaciones[i]->fecha <<endl;
+      cout << publicaciones[i]->contenido <<endl;
     }
 }
 
@@ -244,12 +251,11 @@ void Usuario::agregarAmigo(Usuario* nuevoAmigo){
   nuevoAmigo->amigos.push_back(this);
 }
 void Usuario::crearPublicacion(){//si terminado :D
-  Publicacion* np = new Publicacion(this, "", "");
+   Publicacion* np = new Publicacion(this, "", "");
   cout << "introduzca la fecha" <<endl;
   cin >> np->fecha;
   cout << "introduzca el contenido" << endl;
   cin >> np->contenido;
-  np->usuario=this;
   publicaciones.push_back(np);
 }
 Usuario* Usuario::getAmigo(int id){
@@ -267,20 +273,19 @@ RedSocial::RedSocial(string nombre){
 this->nombre= nombre;
 }
 RedSocial::RedSocial(string nombre,  vector<Usuario*> usuarios):RedSocial(nombre){
-//Crea una red social con nombre y una lista precargada de usuarios.
 this->usuarios = usuarios;
 } 
 RedSocial::RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones):RedSocial(nombre, usuarios){
 this->publicaciones = publicaciones;
 } 
+
 void RedSocial::agregarUsuario(Usuario* nuevo){
   numeroDeUsuarios++;
   usuarios.push_back(nuevo);
 }
-
 void RedSocial::mostrarUsuarios(){
-  cout << "existen: " <<numeroDeUsuarios <<" usuarios en la red social actualmente"<<endl;
-  cout<<"los cuales son:" << endl;
+  system("cls");
+  cout << "existen: " <<numeroDeUsuarios <<" usuarios en la red social actualmente, los cuales son:" << endl;
   for (int i=0; i<usuarios.size(); i++){
       cout << usuarios[i]->nombre <<"  ID:"<< usuarios[i]->getid() << endl;
     }
@@ -288,7 +293,9 @@ void RedSocial::mostrarUsuarios(){
 void RedSocial::mostrarPublicaciones(){
   cout << "existen: " <<numeroDePublicaciones <<" publicaciones en la red social actualmente"<<endl;
 for (int i; i<publicaciones.size(); i++){
-      cout << publicaciones[i] <<endl;
+      cout << publicaciones[i]->usuario <<endl;
+      cout << publicaciones[i]->fecha <<endl;
+      cout << publicaciones[i]->contenido <<endl;
     }
 }
 Usuario* RedSocial::getUsuario(int id){
