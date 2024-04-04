@@ -57,6 +57,7 @@ class RedSocial{
     void agregarUsuario(Usuario* nuevo); //Permite agregar un usuario a la lista total de usuarios.
     void mostrarUsuarios(); //Muestra todos los usuarios que existen actualmente en la red social.
     void mostrarPublicaciones(); //Muestra todas las publicaciones que existen actualmente en la red social.
+    void agregarPublicacion(Publicacion* nuevaPublicacion);
     Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
 };
 RedSocial rs("paxinc");
@@ -150,12 +151,12 @@ default:
 }
 void menuDeUsuario(Usuario* usuario){
   system("cls");
-  int seleccion=1, var;
+  int seleccion=0, var;
   Usuario* amigo;
   
 
 
-while(seleccion != 0){
+while(seleccion != 6){
   usuario->mostrar();
 cout << "presione 1 para ver lista de amigos." << endl; //Muestra un listado de todos los amigos que tiene el usuario.
 cout << "presione 2 para ver las publicaciones." << endl; //Muestra un listado de todas las publicaciones que ha hecho el usuario.
@@ -166,14 +167,17 @@ cout << "presione 6 volver al menu principal" << endl;
 cin >> seleccion;
   switch(seleccion){
     case 1:
+    cls();
   if(usuario->amigos.size()==0){//funcion no sirve, no enseña amigos
       cout<< "jajajaja no tienes amigos loser" << endl;
     }else{
     cout << "Amigos: " << endl;
     usuario->mostrarAmigos(); 
     }
+    fresquito();
     break;
     case 2:
+    cls();
     if(usuario->publicaciones.size()==0){//funcion no sirve, no enseña publicaciones
       cout << "no tienes publicaciones hechas" <<endl;}
     usuario->mostrarPublicaciones();
@@ -285,7 +289,7 @@ void Usuario::crearPublicacion(){//si terminado :D
   cout << "introduzca el contenido" << endl;
   cin >> np->contenido;
   publicaciones.push_back(np);
-  
+  rs.agregarPublicacion(np);
 }
 Usuario* Usuario::getAmigo(int id){
   for (int i; i<amigos.size(); i++){
@@ -321,11 +325,15 @@ void RedSocial::mostrarUsuarios(){
 }
 void RedSocial::mostrarPublicaciones(){
   cout << "existen: " <<numeroDePublicaciones <<" publicaciones en la red social actualmente"<<endl;
-for (int i; i<publicaciones.size(); i++){
-      cout << publicaciones[i]->usuario <<endl;
+for (int i=0; i<publicaciones.size(); i++){
+      cout << publicaciones[i]->usuario->nombre <<endl;
       cout << publicaciones[i]->fecha <<endl;
       cout << publicaciones[i]->contenido <<endl;
     }
+}
+void RedSocial::agregarPublicacion(Publicacion* nuevaPublicacion){
+  numeroDePublicaciones++;
+  publicaciones.push_back(nuevaPublicacion);
 }
 Usuario* RedSocial::getUsuario(int id){
     for(int i = 0; i < usuarios.size(); i++){
