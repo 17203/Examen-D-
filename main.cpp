@@ -61,7 +61,7 @@ class RedSocial{
     void mostrarUsuarios(); //Muestra todos los usuarios que existen actualmente en la red social.
     void mostrarPublicaciones(); //Muestra todas las publicaciones que existen actualmente en la red social.
     void agregarPublicacion(Publicacion* nuevaPublicacion);
-    void sugerencias();
+    void sugerencias(Usuario* usuario);
     void categoriaUsuario();
     Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
 };
@@ -69,7 +69,6 @@ RedSocial rs("paxinc");
 void menuDeUsuario(Usuario* usuario);
 void login(int variable);
 void fresquito();
-
 //menu es medianamente funcional
 int main(){
     Usuario* usuario1 = new Usuario("carlos", 45, "brazil");
@@ -78,6 +77,7 @@ int main(){
     rs.agregarUsuario(usuario1);
     rs.agregarUsuario(usuario2);
     rs.agregarUsuario(usuario3);
+    rs.categoriaUsuario();
 int seleccion=8;
 while (seleccion != 0){
 cls();
@@ -230,7 +230,7 @@ cin >> seleccion;
     return;
     break;
     case 7:
-    rs.sugerencias();
+    rs.sugerencias(usuario);
     default: 
     cout << "opcion no valida, seleccione una correcta "<< endl;
     break;
@@ -247,6 +247,25 @@ void fresquito(){
     do {
         k = getkey();
     } while (k != ' ');}
+
+void RedSocial::sugerencias(Usuario* usuario){
+cout << "segun su edad, le recomendamos a los siguientes usuarios como amigos " << endl;
+if(usuario->edad>=60){
+      for(int i=0; i<usuariosM60.size(); i++){
+        cout << (*(next(usuariosM60.begin(), i)))->nombre << endl;}
+}else if(usuario->edad>=40){
+  for(int i=0; i<usuariosM40.size(); i++){
+    cout << (*(next(usuariosM40.begin(), i))) << endl;}
+}else if(usuario->edad>=20){
+  for(int i=0; i<usuariosM20.size(); i++){
+    cout << (*(next(usuariosM20.begin(), i)))->nombre << endl;}
+}else if(usuario->edad>=14){
+  for(int i=0; i<usuariosM14.size(); i++){
+    cout << (*(next(usuariosM14.begin(), i)))->nombre << endl;}
+}
+/*cout << (*(next(usuariosM60.begin(), i)))->nombre << endl;*/
+fresquito();
+} 
 
 
 
@@ -365,11 +384,6 @@ for (int i=0; i<publicaciones.size(); i++){
       cout << publicaciones[i]->contenido <<endl;
     }
 }
-void RedSocial::sugerencias(){
-cout << "segun su edad, le recomendamos a los siguientes usuarios como amigos " << endl;
-
-fresquito();
-} 
 
 void RedSocial::agregarPublicacion(Publicacion* nuevaPublicacion){
   numeroDePublicaciones++;
