@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <set>
 #include <string>
 #include "rlutil.h"
 using namespace std;
@@ -26,7 +27,7 @@ public:
   string nacionalidad;
   vector<Usuario*> amigos;
   vector <Publicacion*> publicaciones;
-
+  vector <Usuario*> sugerencia;
     Usuario(string nom);
     Usuario(string nomb, int ed);
     Usuario(string nombr, int ed, string nac);
@@ -44,12 +45,14 @@ class RedSocial{
   private:
     vector <Usuario*> usuarios;
     vector <Publicacion*> publicaciones;
-
   public:
     string nombre;
     int numeroDeUsuarios;
     int numeroDePublicaciones;
-    
+    set <Usuario*> usuariosM60;// 60+
+    set <Usuario*> usuariosM40;//40-59
+    set <Usuario*> usuariosM20;//22-39
+    set <Usuario*> usuariosM14;//14-21
     RedSocial(string nombre); //Crea una red social con el nombre asignado.
     RedSocial(string nombre,  vector<Usuario*> usuarios); //Crea una red social con nombre y una lista precargada de usuarios.
     RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones); //Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
@@ -58,6 +61,8 @@ class RedSocial{
     void mostrarUsuarios(); //Muestra todos los usuarios que existen actualmente en la red social.
     void mostrarPublicaciones(); //Muestra todas las publicaciones que existen actualmente en la red social.
     void agregarPublicacion(Publicacion* nuevaPublicacion);
+    void sugerencias();
+    void categoriaUsuario();
     Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
 };
 RedSocial rs("paxinc");
@@ -67,10 +72,12 @@ void fresquito();
 
 //menu es medianamente funcional
 int main(){
-    Usuario* usuario1 = new Usuario("carlos", 25, "brazil");
-    Usuario* usuario2 = new Usuario("Brayan", 30, "polanco");
+    Usuario* usuario1 = new Usuario("carlos", 45, "brazil");
+    Usuario* usuario2 = new Usuario("Brayan", 60, "polanco");
+    Usuario* usuario3 = new Usuario("Leon_Kennedy");
     rs.agregarUsuario(usuario1);
     rs.agregarUsuario(usuario2);
+    rs.agregarUsuario(usuario3);
 int seleccion=8;
 while (seleccion != 0){
 cls();
@@ -115,19 +122,27 @@ cin>> sel;
     cout<<"introduzca el nombre del usuario " <<endl;
     cin >> nom;  
     cout << "introduzca la edad del usuario " << endl;
+    introedad:
     cin>> ed;
+    if (ed>13){
     cout << "introduzca la nacionalidad del usuario " <<endl;
     cin >> nac;
     Usuario* nuevoC = new Usuario(nom,ed, nac);
     rs.agregarUsuario(nuevoC);}
+    else {cout << "edad no valida, el usuario debe ser mayor a los 13 años" << endl;
+    goto introedad;} }
     break;
     case 2:{
     cout<<"introduzca el nombre del usuario " <<endl;
     cin >> nom;  
     cout << "introduzca la edad del usuario " << endl;
+    introedad2:
     cin>> ed;
+    if (ed>13){
     Usuario* nuevoE = new Usuario(nom,ed);
-    rs.agregarUsuario(nuevoE);
+    rs.agregarUsuario(nuevoE);}
+    else {cout << "edad no valida, el usuario debe ser mayor a los 13 años" << endl;
+    goto introedad2;}
    } break;
     case 3:{
     cout<<"introduzca el nombre del usuario " <<endl;
@@ -164,6 +179,7 @@ cout << "presione 3 para crear publicacion." << endl;//Permite crear una nueva p
 cout << "presione 4 para entrar a perfil de amigo" << endl; //Se introduce el ID del amigo para identificarlo y se muestra el Menú de Usuario del amigo seleccionado.
 cout << "presione 5 agregar un nuevo amigo" << endl;//Se muestra la lista de los usuarios que existen, se introduce el ID y se hacen amigos.
 cout << "presione 6 volver al menu principal" << endl;
+cout << "presione 7 para probar las sugerencias" << endl;
 cin >> seleccion;
   switch(seleccion){
     case 1:
@@ -213,6 +229,8 @@ cin >> seleccion;
     case 6:
     return;
     break;
+    case 7:
+    rs.sugerencias();
     default: 
     cout << "opcion no valida, seleccione una correcta "<< endl;
     break;
@@ -230,7 +248,8 @@ void fresquito(){
         k = getkey();
     } while (k != ' ');}
 
-//revisar este constructor por el valor de usuario, este se agrega al vector de publicaciones
+
+
 Publicacion::Publicacion(Usuario* usu, string fech, string cont){
   fecha = fech;
   contenido = cont;
@@ -247,11 +266,12 @@ cout <<"publicado por: " <<  usuario->nombre<<endl;
 Usuario::Usuario(string nom){
   this->id=numId++;
   this->nombre= nom;
-  this->edad= 0;
+  this->edad= 21;
   this->nacionalidad="Racoon city";
 }
 Usuario::Usuario(string nom, int ed): Usuario(nom){
   this->edad = ed;
+
 }
 Usuario::Usuario(string nom, int ed, string nac): Usuario(nom, ed){
   this->nacionalidad = nac;
@@ -277,6 +297,7 @@ void Usuario::mostrarPublicaciones(){
       cout << endl;
     }
 }
+
 
 void Usuario::agregarAmigo(Usuario* nuevoAmigo){
   amigos.push_back(nuevoAmigo);
@@ -311,10 +332,23 @@ this->usuarios = usuarios;
 RedSocial::RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones):RedSocial(nombre, usuarios){
 this->publicaciones = publicaciones;
 } 
-
+void RedSocial::categoriaUsuario(){
+for(int i=0;i<numeroDeUsuarios; i++){
+if(usuarios[i]->edad>=60){
+  usuariosM60.insert(usuarios[i]);
+}else if(usuarios[i]->edad>=40){
+  usuariosM40.insert(usuarios[i]);
+}else if(usuarios[i]->edad>=20){
+  usuariosM20.insert(usuarios[i]);
+}else if(usuarios[i]->edad>=14){
+  usuariosM14.insert(usuarios[i]);
+}
+}
+}
 void RedSocial::agregarUsuario(Usuario* nuevo){
   numeroDeUsuarios++;
   usuarios.push_back(nuevo);
+  categoriaUsuario();
 }
 void RedSocial::mostrarUsuarios(){
   system("cls");
@@ -331,6 +365,12 @@ for (int i=0; i<publicaciones.size(); i++){
       cout << publicaciones[i]->contenido <<endl;
     }
 }
+void RedSocial::sugerencias(){
+cout << "segun su edad, le recomendamos a los siguientes usuarios como amigos " << endl;
+
+fresquito();
+} 
+
 void RedSocial::agregarPublicacion(Publicacion* nuevaPublicacion){
   numeroDePublicaciones++;
   publicaciones.push_back(nuevaPublicacion);
