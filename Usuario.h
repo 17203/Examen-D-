@@ -18,7 +18,6 @@ public:
     string nacionalidad;
     vector<Usuario*> amigos;
     vector<Publicacion*> publicaciones;
-    vector<Usuario*> sugerencia;
 
     Usuario(string nom);
     Usuario(string nomb, int ed);
