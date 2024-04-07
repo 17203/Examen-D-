@@ -3,73 +3,17 @@
 #include <set>
 #include <string>
 #include "rlutil.h"
+#include "Usuario.h"
+#include "Publicacion.h"
+#include "RedSocial.h"
 using namespace std;
 using namespace rlutil;
-class Usuario;
-class Publicacion{
-private:
-  int id;
-public:
-  string fecha;
-  string contenido;
-  Usuario* usuario;
-  Publicacion(Usuario* usu, string fech, string cont);
-  void mostrarPublicacion();
-};
 
-class Usuario{
-private:
-  static int numId;
-  int id;
-public:
-  string nombre;
-  int edad;
-  string nacionalidad;
-  vector<Usuario*> amigos;
-  vector <Publicacion*> publicaciones;
-  vector <Usuario*> sugerencia;
-    Usuario(string nom);
-    Usuario(string nomb, int ed);
-    Usuario(string nombr, int ed, string nac);
-
-  int getid();
-  void mostrar();
-  void mostrarAmigos();
-  void mostrarPublicaciones();
-  void agregarAmigo(Usuario* nuevoAmigo);
-  void crearPublicacion();
-  Usuario* getAmigo(int id);
-};
-int Usuario::numId=0;
-class RedSocial{
-  private:
-    vector <Usuario*> usuarios;
-    vector <Publicacion*> publicaciones;
-  public:
-    string nombre;
-    int numeroDeUsuarios;
-    int numeroDePublicaciones;
-    set <Usuario*> usuariosM60;// 60+
-    set <Usuario*> usuariosM40;//40-59
-    set <Usuario*> usuariosM20;//22-39
-    set <Usuario*> usuariosM14;//14-21
-    RedSocial(string nombre); //Crea una red social con el nombre asignado.
-    RedSocial(string nombre,  vector<Usuario*> usuarios); //Crea una red social con nombre y una lista precargada de usuarios.
-    RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones); //Crea una red social con nombre y listas precargadas de usuarios y publicaciones.
-
-    void agregarUsuario(Usuario* nuevo); //Permite agregar un usuario a la lista total de usuarios.
-    void mostrarUsuarios(); //Muestra todos los usuarios que existen actualmente en la red social.
-    void mostrarPublicaciones(); //Muestra todas las publicaciones que existen actualmente en la red social.
-    void agregarPublicacion(Publicacion* nuevaPublicacion);
-    void sugerencias(Usuario* usuario);
-    void categoriaUsuario();
-    Usuario* getUsuario (int id); //Regresa un apuntador hacia el usuario que tiene el id usado En caso de no encontrar una coincidencia, regresa nullptr y muestra un mensaje diciendo que no existe ese usuario.
-};
 RedSocial rs("paxinc");
 void menuDeUsuario(Usuario* usuario);
 void login(int variable);
 void fresquito();
-//menu es medianamente funcional
+//menu es funcional
 int main(){
     Usuario* usuario1 = new Usuario("carlos", 45, "brazil");
     Usuario* usuario2 = new Usuario("Brayan", 60, "polanco");
@@ -194,13 +138,13 @@ cin >> seleccion;
     break;
     case 2:
     cls();
-    if(usuario->publicaciones.size()==0){//funcion no sirve, no enseña publicaciones
+    if(usuario->publicaciones.size()==0){
       cout << "no tienes publicaciones hechas" <<endl;}
     usuario->mostrarPublicaciones();
     fresquito();
     break;
     case 3:
-    usuario->crearPublicacion();
+    usuario->crearPublicacion(rs);
     break;
     case 4:
     cout << "introduzca el ID del perfil de su amigo" <<endl;
@@ -231,6 +175,7 @@ cin >> seleccion;
     break;
     case 7:
     rs.sugerencias(usuario);
+    fresquito();
     default: 
     cout << "opcion no valida, seleccione una correcta "<< endl;
     break;
@@ -241,6 +186,7 @@ void login(int variable){
 Usuario* us = rs.getUsuario(variable);
   if(us != nullptr)
   menuDeUsuario(us);}
+
 void fresquito(){
   cout << "presione espacio para continuar" << endl;
   char k;
@@ -248,153 +194,3 @@ void fresquito(){
         k = getkey();
     } while (k != ' ');}
 
-void RedSocial::sugerencias(Usuario* usuario){
-cout << "segun su edad, le recomendamos a los siguientes usuarios como amigos " << endl;
-if(usuario->edad>=60){
-      for(int i=0; i<usuariosM60.size(); i++){
-        cout << (*(next(usuariosM60.begin(), i)))->nombre << endl;}
-}else if(usuario->edad>=40){
-  for(int i=0; i<usuariosM40.size(); i++){
-    cout << (*(next(usuariosM40.begin(), i))) << endl;}
-}else if(usuario->edad>=20){
-  for(int i=0; i<usuariosM20.size(); i++){
-    cout << (*(next(usuariosM20.begin(), i)))->nombre << endl;}
-}else if(usuario->edad>=14){
-  for(int i=0; i<usuariosM14.size(); i++){
-    cout << (*(next(usuariosM14.begin(), i)))->nombre << endl;}
-}
-/*cout << (*(next(usuariosM60.begin(), i)))->nombre << endl;*/
-fresquito();
-} 
-
-
-
-Publicacion::Publicacion(Usuario* usu, string fech, string cont){
-  fecha = fech;
-  contenido = cont;
-  usuario = usu;
-  
-}
-
-void Publicacion::mostrarPublicacion(){
-cout <<"publicado en: "<< fecha << endl;
-cout << contenido<< endl;
-cout <<"publicado por: " <<  usuario->nombre<<endl;
-}
-
-Usuario::Usuario(string nom){
-  this->id=numId++;
-  this->nombre= nom;
-  this->edad= 21;
-  this->nacionalidad="Racoon city";
-}
-Usuario::Usuario(string nom, int ed): Usuario(nom){
-  this->edad = ed;
-
-}
-Usuario::Usuario(string nom, int ed, string nac): Usuario(nom, ed){
-  this->nacionalidad = nac;
-}
-
-int Usuario::getid(){
-    return this->id;
-}
-void Usuario::mostrar(){
-  cout << "hola, soy " << nombre << ", tengo "<< edad << " años y provengo de "<< nacionalidad << endl;
-  cout <<"mi identificador es " << this->id << endl;
-}
-void Usuario::mostrarAmigos(){
-    for (int i=0; i<amigos.size(); i++){
-      cout << amigos[i]->nombre <<endl;
-    }
-}
-void Usuario::mostrarPublicaciones(){
-  for (int i=0; i<publicaciones.size(); i++){
-      cout << "publicacion numero #"<< i+1 <<endl;
-      cout << publicaciones[i]->fecha <<endl;
-      cout << publicaciones[i]->contenido <<endl;
-      cout << endl;
-    }
-}
-
-
-void Usuario::agregarAmigo(Usuario* nuevoAmigo){
-  amigos.push_back(nuevoAmigo);
-  nuevoAmigo->amigos.push_back(this);
-}
-void Usuario::crearPublicacion(){//si terminado :D
-   Publicacion* np = new Publicacion(this, "", "");
-  cout << "introduzca la fecha" <<endl;
-  cin >> np->fecha;
-  cout << "introduzca el contenido" << endl;
-  cin >> np->contenido;
-  publicaciones.push_back(np);
-  rs.agregarPublicacion(np);
-}
-Usuario* Usuario::getAmigo(int id){
-  for (int i; i<amigos.size(); i++){
-     if(amigos[i]->id == id){
-      return amigos[i];
-     }
-     }
-      cout << "no existe ningun amigo con ese id :(" << endl;
-      return nullptr;
-
-}
-
-RedSocial::RedSocial(string nombre){
-this->nombre= nombre;
-}
-RedSocial::RedSocial(string nombre,  vector<Usuario*> usuarios):RedSocial(nombre){
-this->usuarios = usuarios;
-} 
-RedSocial::RedSocial(string nombre, vector<Usuario*> usuarios, vector<Publicacion*> publicaciones):RedSocial(nombre, usuarios){
-this->publicaciones = publicaciones;
-} 
-void RedSocial::categoriaUsuario(){
-for(int i=0;i<numeroDeUsuarios; i++){
-if(usuarios[i]->edad>=60){
-  usuariosM60.insert(usuarios[i]);
-}else if(usuarios[i]->edad>=40){
-  usuariosM40.insert(usuarios[i]);
-}else if(usuarios[i]->edad>=20){
-  usuariosM20.insert(usuarios[i]);
-}else if(usuarios[i]->edad>=14){
-  usuariosM14.insert(usuarios[i]);
-}
-}
-}
-void RedSocial::agregarUsuario(Usuario* nuevo){
-  numeroDeUsuarios++;
-  usuarios.push_back(nuevo);
-  categoriaUsuario();
-}
-void RedSocial::mostrarUsuarios(){
-  system("cls");
-  cout << "existen: " <<numeroDeUsuarios <<" usuarios en la red social actualmente, los cuales son:" << endl;
-  for (int i=0; i<usuarios.size(); i++){
-      cout << usuarios[i]->nombre <<"  ID:"<< usuarios[i]->getid() << endl;
-    }
-}
-void RedSocial::mostrarPublicaciones(){
-  cout << "existen: " <<numeroDePublicaciones <<" publicaciones en la red social actualmente"<<endl;
-for (int i=0; i<publicaciones.size(); i++){
-      cout << publicaciones[i]->usuario->nombre <<endl;
-      cout << publicaciones[i]->fecha <<endl;
-      cout << publicaciones[i]->contenido <<endl;
-    }
-}
-
-void RedSocial::agregarPublicacion(Publicacion* nuevaPublicacion){
-  numeroDePublicaciones++;
-  publicaciones.push_back(nuevaPublicacion);
-}
-Usuario* RedSocial::getUsuario(int id){
-    for(int i = 0; i < usuarios.size(); i++){
-        if(usuarios[i]->getid() == id){
-            return usuarios[i];
-        }
-    }
-    cout << "este usuario no existe" << endl;
-    return nullptr;
-}
