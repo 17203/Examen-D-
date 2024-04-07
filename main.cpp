@@ -77,7 +77,7 @@ cin>> sel;
     goto introedad;} }
     break;
     case 2:{
-    cout<<"introduzca el nombre del usuario " <<endl;
+    cout<<"introduzca el nombre del usuario, remplaze los espacios por otros caracteres " <<endl;
     cin >> nom;  
     cout << "introduzca la edad del usuario " << endl;
     introedad2:
