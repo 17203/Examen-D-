@@ -9,7 +9,7 @@
 using namespace std;
 using namespace rlutil;
 
-RedSocial rs("paxinc");
+RedSocial rs("Suave_Spychalski");
 void menuDeUsuario(Usuario* usuario);
 void login(int variable);
 void fresquito();
