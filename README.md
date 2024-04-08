@@ -8,7 +8,7 @@ d. Explicación de qué diferencia a tu red social de las demás.
 
 Proyecto / Examen Parcial 2
 Red Social medio funcional :D
-RedSocial:
+RedSocial:Suave_Spychalski
 main.cpp:
 Contiene 4 fuciones
 main- Menu principal, contiene las 5 opciones requeridas en la rubrica, utiliza un switch para seleccionar
