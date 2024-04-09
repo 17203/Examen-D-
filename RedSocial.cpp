@@ -1,6 +1,7 @@
 #include "RedSocial.h"
 #include "Usuario.h"
 #include "Publicacion.h"
+#include "rlutil.h"
 #include <iostream>
 using namespace std;
 
@@ -52,7 +53,7 @@ void RedSocial::agregarUsuario(Usuario* nuevo){
   categoriaUsuario();
 }
 void RedSocial::mostrarUsuarios(){
-  system("cls");
+   rlutil::cls();
   cout << "existen: " <<numeroDeUsuarios <<" usuarios en la red social actualmente, los cuales son:" << endl;
   for (int i=0; i<usuarios.size(); i++){
       cout << usuarios[i]->nombre <<"  ID:"<< usuarios[i]->getid() << endl;
@@ -61,7 +62,7 @@ void RedSocial::mostrarUsuarios(){
 void RedSocial::mostrarPublicaciones(){
   cout << "existen: " <<numeroDePublicaciones <<" publicaciones en la red social actualmente"<<endl;
 for (int i=0; i<publicaciones.size(); i++){
-      cout << publicaciones[i]->usuario->nombre <<endl;
+      cout << publicaciones[i]->usuario->nombre<<":" <<endl;
       cout << publicaciones[i]->fecha <<endl;
       cout << publicaciones[i]->contenido <<endl;
     }

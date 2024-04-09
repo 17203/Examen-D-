@@ -9,7 +9,7 @@
 using namespace std;
 using namespace rlutil;
 
-RedSocial rs("paxinc");
+RedSocial rs("Suave_Spychalski");
 void menuDeUsuario(Usuario* usuario);
 void login(int variable);
 void fresquito();
@@ -18,9 +18,11 @@ int main(){
     Usuario* usuario1 = new Usuario("carlos", 45, "brazil");
     Usuario* usuario2 = new Usuario("Brayan", 60, "polanco");
     Usuario* usuario3 = new Usuario("Leon_Kennedy");
+    Usuario* usuario4 = new Usuario("Alfa",18,"herencia");
     rs.agregarUsuario(usuario1);
     rs.agregarUsuario(usuario2);
     rs.agregarUsuario(usuario3);
+    rs.agregarUsuario(usuario4);
     rs.categoriaUsuario();
 int seleccion=8;
 while (seleccion != 0){
@@ -41,7 +43,7 @@ case 1:
   }
 break;
   case 2: 
-{ system("cls");
+{ cls();
   rs.mostrarPublicaciones();
   fresquito();}
   break;
@@ -54,7 +56,7 @@ case 3:
 break;
 case 4:
 { 
-  system("cls");
+  cls();
   cout << " si desea incluir nacionalidad y edad pulse 1" << endl;
       cout << " si desea incluir edad pulse 2" << endl;
       cout << " si no los desea incluir pulse 3" << endl;
@@ -63,7 +65,7 @@ int ed, sel;
 cin>> sel;
   switch(sel){
     case 1:{
-    cout<<"introduzca el nombre del usuario " <<endl;
+    cout<<"introduzca el nombre del usuario, reemplace los espacios por otros caracteres" <<endl;
     cin >> nom;  
     cout << "introduzca la edad del usuario " << endl;
     introedad:
@@ -77,7 +79,7 @@ cin>> sel;
     goto introedad;} }
     break;
     case 2:{
-    cout<<"introduzca el nombre del usuario, remplaze los espacios por otros caracteres " <<endl;
+    cout<<"introduzca el nombre del usuario reemplace los espacios por otros caracteres " <<endl;
     cin >> nom;  
     cout << "introduzca la edad del usuario " << endl;
     introedad2:
@@ -89,7 +91,7 @@ cin>> sel;
     goto introedad2;}
    } break;
     case 3:{
-    cout<<"introduzca el nombre del usuario " <<endl;
+    cout<<"introduzca el nombre del usuario, reemplace los espacios por otros caracteres " <<endl;
     cin >> nom;  
     Usuario* nuevoI = new Usuario(nom);
     rs.agregarUsuario(nuevoI);
@@ -109,7 +111,7 @@ default:
   return 0;
 }
 void menuDeUsuario(Usuario* usuario){
-  system("cls");
+  cls();
   int seleccion=0, var;
   Usuario* amigo;
   
@@ -193,4 +195,3 @@ void fresquito(){
     do {
         k = getkey();
     } while (k != ' ');}
-
